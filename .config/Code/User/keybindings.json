@@ -16,11 +16,11 @@
       "key": "ctrl-j",
       "command": "workbench.action.navigateDown"
     },
-    {
-      "key": "shift+k",
-      "command": "workbench.action.nextEditor",
-      "when": "editorFocus"
-    },
+    // {
+    // //   "key": "shift+k",
+    //   "command": "workbench.action.nextEditor",
+    //   "when": "editorFocus"
+    // },
     {
       "key": "shift+j",
       "command": "workbench.action.previousEditor",
