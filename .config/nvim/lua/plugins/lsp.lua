@@ -18,27 +18,6 @@ return {
     end,
   },
 
-  -- DAP Configuration (use system-provided debuggers)
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = { "rcarriga/nvim-dap-ui" },
-    config = function()
-      local dap = require("dap")
-      
-      -- Configure system codelldb
-      dap.adapters.codelldb = {
-        type = "server",
-        port = "${port}",
-        executable = {
-          command = "codelldb",  -- Use system codelldb
-          args = { "--port", "${port}" },
-        },
-      }
-      
-      -- Rest of DAP config...
-    end,
-  },
-
   -- For null-ls, use system-provided formatters/linters
   
 }
