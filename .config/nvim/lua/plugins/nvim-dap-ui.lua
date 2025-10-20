@@ -9,6 +9,14 @@ return {
     local dapui = require("dapui")
 
     dapui.setup()
+    vim.api.nvim_set_hl(0, 'DapStopped', { fg = '#ffcc00', bg = '#2d4f67' })
+
+    vim.fn.sign_define('DapStopped', {
+      text = '▶',
+      texthl = 'DapStopped',
+      linehl = 'DapStopped',  -- This is what highlights the line
+      numhl = 'DapStopped'
+    })
 
     -- Auto-open/close UI
     dap.listeners.after.event_initialized["dapui_config"] = function()
