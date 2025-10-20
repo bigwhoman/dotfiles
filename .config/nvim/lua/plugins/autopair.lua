@@ -17,7 +17,11 @@ return {
         java = false, -- don't check treesitter on java
       },
     })
+    local Rule = require('nvim-autopairs.rule')
+    local npairs = require('nvim-autopairs')
 
+    -- Add rule for /* */
+    npairs.add_rule(Rule("/*", "*/", {"rust", "c", "cpp", "java", "javascript", "typescript"}))
     -- import nvim-autopairs completion functionality
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
