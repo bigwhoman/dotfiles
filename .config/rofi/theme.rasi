@@ -1,32 +1,32 @@
-/* Catppuccin Macchiato */
+/* Gruvbox Dark */
 
 * {
-  rosewater:      #f4dbd6;
-  flamingo:       #f0c6c6;
-  pink:           #f5bde6;
-  mauve:          #c6a0f6;
-  red:            #ed8796;
-  maroon:         #ee99a0;
-  peach:          #f5a97f;
-  yellow:         #eed49f;
-  green:          #a6da95;
-  teal:           #8bd5ca;
-  sky:            #91d7e3;
-  sapphire:       #7dc4e4;
-  blue:           #8aadf4;
-  lavender:       #b7bdf8;
-  text:           #cad3f5;
-  subtext1:       #b8c0e0;
-  subtext0:       #a5adcb;
-  overlay2:       #939ab7;
-  overlay1:       #8087a2;
-  overlay0:       #6e738d;
-  surface2:       #5b6078;
-  surface1:       #494d64;
-  surface0:       #363a4f;
-  base:           #24273a;
-  mantle:         #1e2030;
-  crust:          #181926;
+  bg0h:           #1d2021;
+  bg0:            #282828;
+  bg1:            #3c3836;
+  bg2:            #504945;
+  bg3:            #665c54;
+  bg4:            #7c6f64;
+  gray:           #928374;
+  fg4:            #a89984;
+  fg3:            #bdae93;
+  fg2:            #d5c4a1;
+  fg1:            #ebdbb2;
+  fg0:            #fbf1c7;
+  red:            #cc241d;
+  brightred:      #fb4934;
+  green:          #98971a;
+  brightgreen:    #b8bb26;
+  yellow:         #d79921;
+  brightyellow:   #fabd2f;
+  blue:           #458588;
+  brightblue:     #83a598;
+  purple:         #b16286;
+  brightpurple:   #d3869b;
+  aqua:           #689d6a;
+  brightaqua:     #8ec07c;
+  orange:         #d65d0e;
+  brightorange:   #fe8019;
 }
 
 /* 
@@ -36,10 +36,10 @@
 */
 
 * {
-  main-bg:        @crust;
-  main-fg:        @text;
-  main-br:        @overlay2;
-  input-bg:       @mantle;
-  select-bg:      @overlay2;
-  select-fg:      @crust;
+  main-bg:        @bg0h;
+  main-fg:        @fg0;
+  main-br:        @yellow;
+  input-bg:       @bg1;
+  select-bg:      @yellow;
+  select-fg:      @bg0h;
 }
