@@ -10,11 +10,26 @@ get_cpu_frequency() {
   echo "$average_freq"
 }
 
-# Get CPU temperature
+# Get CPU temperature.
+# Reads the x86_pkg_temp thermal zone straight from sysfs - no fork at all.
+# Falls back to `sensors` (2 forks, walks every hwmon device) only if that is missing.
+_pkg_temp_zone=""
+for _z in /sys/class/thermal/thermal_zone*; do
+  if [[ -r "$_z/type" && "$(<"$_z/type")" == "x86_pkg_temp" ]]; then
+    _pkg_temp_zone="$_z/temp"
+    break
+  fi
+done
+
 get_cpu_temperature() {
-  temp=$(sensors | awk '/Package id 0/ {print $4}' | awk -F '[+.]' '{print $2}')
-  if [[ -z "$temp" ]]; then
-    temp=$(sensors | awk '/Tctl/ {print $2}' | tr -d '+°C')
+  local temp="" temp_f=""
+  if [[ -n "$_pkg_temp_zone" && -r "$_pkg_temp_zone" ]]; then
+    temp=$(( $(<"$_pkg_temp_zone") / 1000 ))
+  else
+    local sensors_out
+    sensors_out=$(sensors)
+    temp=$(awk '/Package id 0/ {print $4}' <<<"$sensors_out" | awk -F '[+.]' '{print $2}')
+    [[ -z "$temp" ]] && temp=$(awk '/Tctl/ {print $2}' <<<"$sensors_out" | tr -d '+\u00b0C')
   fi
   if [[ -z "$temp" ]]; then
     temp="N/A"

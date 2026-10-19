@@ -1,7 +1,7 @@
 @import "theme.css";
 
 * {
-  font-family: "JetBrainsMono Nerd Font";
+  font-family: "JetBrainsMono Nerd Font", "NotoSansM Nerd Font", monospace;
   font-weight: bold;
   min-height: 0;
   padding: 0;
@@ -198,7 +198,7 @@ tooltip label {
   color: @distro-fg;
   background: @distro-bg;
   margin: 0 -1px -2px 0;
-  padding: 0 0 0 3px;
+  padding: 0 5px 0 1px;
   text-shadow: 0 0 1.5px rgba(0, 0, 0, 1);
 }
 #custom-right2 {
@@ -372,7 +372,7 @@ tooltip label {
 
 /* modules */
 * {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 /* left and right arrows */
@@ -389,25 +389,25 @@ tooltip label {
 #custom-right3,
 #custom-right4,
 #custom-right5 {
-  font-size: 14.68px;
+  font-size: 17.62px;
 }
 
 /* left and right inverse */
 #custom-leftin1,
 #custom-leftin2,
 #custom-rightin1 {
-  font-size: 15.5px;
+  font-size: 18.6px;
 }
 
 /* distro icon */
 #custom-distro {
-  font-size: 14.6px;
+  font-size: 14px;
 }
 
 /* distro arrows override */
 #custom-left5,
 #custom-right2 {
-  font-size: 15.68px;
+  font-size: 18.82px;
 }
 
 /*
@@ -416,14 +416,14 @@ tooltip label {
 */
 
 #workspaces button {
-  border-radius: 8px;
-  padding: 0 2px;
+  border-radius: 10px;
+  padding: 0 3px;
 }
 #workspaces button.active {
-  padding: 0 6px;
+  padding: 0 7px;
 }
 
 #custom-power {
-  border-radius: 10px;
-  padding: 0 6px 0 9px;
+  border-radius: 12px;
+  padding: 0 7px 0 11px;
 }

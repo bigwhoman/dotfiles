@@ -8,4 +8,28 @@
         "after": ["<Esc>"]
       }
     ]
+
+
+  "workbench.colorTheme": "Monokai Pro (Filter Spectrum)",
+
+  // Typing jk quickly in insert mode acts as Esc
+  "vim.insertModeKeyBindings": [
+    { "before": ["j", "k"], "after": ["<Esc>"] }
+  ],
+
+"vim.useCtrlKeys": true,
+"vim.handleKeys": {
+  "<C-d>": true,
+  "<C-u>": true
+}
+
+  // j/k move by visual (wrapped) lines instead of skipping whole wrapped lines
+  "vim.normalModeKeyBindingsNonRecursive": [
+    { "before": ["j"], "after": ["g", "j"] },
+    { "before": ["k"], "after": ["g", "k"] }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    { "before": ["j"], "after": ["g", "j"] },
+    { "before": ["k"], "after": ["g", "k"] }
+  ]
 }

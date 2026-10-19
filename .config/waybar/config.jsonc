@@ -90,11 +90,12 @@
   "hyprland/window": {
     "format": "{}",
     "min-length": 5,
+    "max-length": 30,
 
     "rewrite": {
       // Desktop
       "": 
-        "<span foreground='#1e66f5'> </span> Hyprland",
+        "<span foreground='#8caaee'> </span> Hyprland",
 
       // Terminal
       "~": "  Terminal",
@@ -104,49 +105,49 @@
       // Browser
 
       "(.*)Mozilla Firefox": 
-        "<span foreground='#d20f39'>󰈹 </span> Firefox",
+        "<span foreground='#e78284'>󰈹 </span> Firefox",
       "(.*) — Mozilla Firefox": 
-        "<span foreground='#d20f39'>󰈹 </span> $1",
+        "<span foreground='#e78284'>󰈹 </span> $1",
 
       "(.*)Zen Browser": 
-        "<span foreground='#fe640b'>󰺕 </span> Zen Browser",
+        "<span foreground='#ef9f76'>󰺕 </span> Zen Browser",
       "(.*) — Zen Browser": 
-        "<span foreground='#fe640b'>󰺕 </span> $1",
+        "<span foreground='#ef9f76'>󰺕 </span> $1",
 
       // Development
 
       "(.*) - Visual Studio Code": 
-        "<span foreground='#1e66f5'>󰨞 </span> $1",
+        "<span foreground='#8caaee'>󰨞 </span> $1",
       "(.*)Visual Studio Code": 
-        "<span foreground='#1e66f5'>󰨞 </span> Visual Studio Code",
+        "<span foreground='#8caaee'>󰨞 </span> Visual Studio Code",
 
       "nvim": 
-        "<span foreground='#40a02b'> </span> Neovim",
+        "<span foreground='#a6d189'> </span> Neovim",
       "nvim (.*)": 
-        "<span foreground='#40a02b'> </span> $1",
+        "<span foreground='#a6d189'> </span> $1",
 
       "vim": 
-        "<span foreground='#40a02b'> </span> Vim",
+        "<span foreground='#a6d189'> </span> Vim",
       "vim (.*)": 
-        "<span foreground='#40a02b'> </span> $1",
+        "<span foreground='#a6d189'> </span> $1",
 
       // Media
 
       "(.*)Spotify": 
-        "<span foreground='#40a02b'> </span> Spotify",
+        "<span foreground='#a6d189'> </span> Spotify",
       "(.*)Spotify Premium": 
-        "<span foreground='#40a02b'> </span> Spotify Premium",
+        "<span foreground='#a6d189'> </span> Spotify Premium",
 
       "OBS(.*)": 
-        "<span foreground='#6c6f85'> </span> OBS Studio",
+        "<span foreground='#a5adce'> </span> OBS Studio",
 
       "VLC media player": 
-        "<span foreground='#fe640b'>󰕼 </span> VLC Media Player",
+        "<span foreground='#ef9f76'>󰕼 </span> VLC Media Player",
       "(.*) - VLC media player": 
-        "<span foreground='#fe640b'>󰕼 </span> $1",
+        "<span foreground='#ef9f76'>󰕼 </span> $1",
 
       "(.*) - mpv": 
-        "<span foreground='#8839ef'> </span> $1",
+        "<span foreground='#ca9ee6'> </span> $1",
 
       "qView": "  qView",
 
@@ -157,25 +158,25 @@
       // Social
 
       "vesktop": 
-        "<span foreground='#1e66f5'> </span> Discord",
+        "<span foreground='#8caaee'> </span> Discord",
 
       "• Discord(.*)": "Discord$1",
       "(.*)Discord(.*)": 
-        "<span foreground='#1e66f5'> </span> $1Discord$2",
+        "<span foreground='#8caaee'> </span> $1Discord$2",
 
       // Documents
 
       "ONLYOFFICE Desktop Editors": 
-        "<span foreground='#d20f39'> </span> OnlyOffice Desktop",
+        "<span foreground='#e78284'> </span> OnlyOffice Desktop",
 
       "(.*).docx": 
-        "<span foreground='#1e66f5'> </span> $1.docx",
+        "<span foreground='#8caaee'> </span> $1.docx",
       "(.*).xlsx": 
-        "<span foreground='#40a02b'> </span> $1.xlsx",
+        "<span foreground='#a6d189'> </span> $1.xlsx",
       "(.*).pptx": 
-        "<span foreground='#fe640b'> </span> $1.pptx",
+        "<span foreground='#ef9f76'> </span> $1.pptx",
       "(.*).pdf": 
-        "<span foreground='#d20f39'> </span> $1.pdf",
+        "<span foreground='#e78284'> </span> $1.pdf",
 
       // System
       "Authenticate": "  Authenticate"
@@ -186,7 +187,7 @@
     "exec": "~/.config/waybar/scripts/cpu-temp.sh",
     "return-type": "json",
     "format": "{}",
-    "interval": 5,
+    "interval": 10,
     "min-length": 8,
     "max-length": 8
   },
@@ -200,7 +201,7 @@
     "format": "󰘚 {percentage}%",
     "format-critical": "󰀦 {percentage}%",
     "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
-    "interval": 5,
+    "interval": 10,
     "min-length": 7,
     "max-length": 7
   },
@@ -208,13 +209,13 @@
   "cpu": {
     "format": "󰻠 {usage}%",
     "tooltip": false,
-    "interval": 5,
+    "interval": 10,
     "min-length": 6,
     "max-length": 6
   },
 
   "custom/distro": {
-    "format": "❄ ",   
+    "format": "󰣇",
     "tooltip": false
   },
 
@@ -249,11 +250,11 @@
 
       "format": {
         "months": 
-          "<span color='#7287fd'><b>{}</b></span>",
+          "<span color='#babbf1'><b>{}</b></span>",
         "weekdays": 
-          "<span color='#6c6f85' font='7'>{}</span>",
+          "<span color='#a5adce' font='7'>{}</span>",
         "today": 
-          "<span color='#d20f39'><b>{}</b></span>"
+          "<span color='#e78284'><b>{}</b></span>"
       }
     },
 
@@ -272,9 +273,9 @@
     "format": "{}",
     "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "on-click-right": "kitty --title '󰤨  Network Manager TUI' bash -c nmtui",
-    "interval": 1,
-    "min-length": 1,
-    "max-length": 1
+    "interval": 15,
+    "min-length": 2,
+    "max-length": 2
   },
 
   "bluetooth": {
@@ -296,9 +297,9 @@
 
     "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
     "on-click-right": "kitty --title '󰂯  Bluetooth TUI' bash -c bluetui",
-    "interval": 1,
-    "min-length": 1,
-    "max-length": 1
+    "interval": 5,
+    "min-length": 2,
+    "max-length": 2
   },
 
   "custom/update": {
@@ -307,8 +308,8 @@
     "format": "{}",
     "on-click": "hyprctl dispatch exec '~/.config/waybar/scripts/system-update.sh up'",
     "interval": 30,
-    "min-length": 1,
-    "max-length": 1
+    "min-length": 2,
+    "max-length": 2
   },
 
   "mpris": {
@@ -317,17 +318,17 @@
 
     "player-icons": {
       "default": "󰝚 ",
-      "spotify": "<span foreground='#40a02b'>󰓇 </span>",
-      "firefox": "<span foreground='#d20f39'>󰗃 </span>"
+      "spotify": "<span foreground='#a6d189'>󰓇 </span>",
+      "firefox": "<span foreground='#e78284'>󰗃 </span>"
     },
     "status-icons": {
-      "paused": "<span color='#7287fd'>\u200A\u200A󰏤\u2009\u2009</span>"
+      "paused": "<span color='#babbf1'>\u200A\u200A󰏤\u2009\u2009</span>"
     },
 
     "tooltip-format": "Playing: {title} - {artist}",
     "tooltip-format-paused": "Paused: {title} - {artist}",
     "min-length": 5,
-    "max-length": 35
+    "max-length": 25
   },
 
   "pulseaudio": {
@@ -370,7 +371,7 @@
 
     "tooltip-format": "Discharging: {time}",
     "tooltip-format-charging": "Charging: {time}",
-    "interval": 1,
+    "interval": 30,
     "min-length": 6,
     "max-length": 6
   },

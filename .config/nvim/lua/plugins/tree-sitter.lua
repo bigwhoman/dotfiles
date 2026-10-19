@@ -1,69 +1,71 @@
+-- nvim-treesitter's `master` branch is frozen and does not support Neovim 0.12:
+-- its query directives crash with "attempt to call method 'range'" (e.g. on
+-- markdown code fences). This uses the `main` rewrite instead. Highlighting is
+-- now done by Neovim itself; the plugin only installs parsers and queries.
+-- Installing parsers needs `tree-sitter-cli` (pacman -S tree-sitter-cli) and gcc.
+
+-- The old ensure_installed list, plus what auto_install had picked up over time.
+local parsers = {
+    "c", "lua", "vim", "vimdoc", "query", "bash", "python", "markdown", "markdown_inline",
+    "csv", "diff", "dockerfile", "fish", "gitignore", "hyprlang", "ini", "javascript",
+    "json", "make", "rust", "ssh_config", "toml", "tsv", "xml", "yaml",
+}
+
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main",
+        lazy = false, -- the main branch does not support lazy-loading
+        build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter.configs").setup({
-                ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "bash", "python"},
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                },
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection =  "<C-space>", 
-                        node_incremental = "<C-space>", 
-                        scope_incremental = "<C-s>",
-                        node_decremental = "<bs>",
-                    }
-                },
-                textobjects = {
-                    select = {
-                      enable = true,
+            require("nvim-treesitter").install(parsers)
 
-                      -- Automatically jump forward to textobj, similar to targets.vim
-                      lookahead = true,
-
-                      keymaps = {
-                        -- You can use the capture groups defined in textobjects.scm
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
-                        -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                        -- nvim_buf_set_keymap) which plugins like which-key display
-                        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-                        -- You can also use captures from other query groups like `locals.scm`
-                        ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-                      },
-                      -- You can choose the select mode (default is charwise 'v')
-                      --
-                      -- Can also be a function which gets passed a table with the keys
-                      -- * query_string: eg '@function.inner'
-                      -- * method: eg 'v' or 'o'
-                      -- and should return the mode ('v', 'V', or '<c-v>') or a table
-                      -- mapping query_strings to modes.
-                      selection_modes = {
-                        ['@parameter.outer'] = 'v', -- charwise
-                        ['@function.outer'] = 'V', -- linewise
-                        ['@class.outer'] = '<c-v>', -- blockwise
-                      },
-                      -- If you set this to `true` (default is `false`) then any textobject is
-                      -- extended to include preceding or succeeding whitespace. Succeeding
-                      -- whitespace has priority in order to act similarly to eg the built-in
-                      -- `ap`.
-                      --
-                      -- Can also be a function which gets passed a table with the keys
-                      -- * query_string: eg '@function.inner'
-                      -- * selection_mode: eg 'v'
-                      -- and should return true or false
-                      include_surrounding_whitespace = true,
-                   },
-                }
-
+            -- Replaces `highlight = { enable = true }`: start Neovim's treesitter
+            -- highlighting for any filetype that has a parser installed.
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("treesitter_start", { clear = true }),
+                callback = function(args)
+                    pcall(vim.treesitter.start, args.buf)
+                end,
             })
-        end, 
-      },
-      {
+
+            -- Replaces `incremental_selection`: Neovim 0.12 has it built in as
+            -- `an` (expand to parent node) and `in` (shrink back) in visual mode.
+            -- These keep the old keys; there is no equivalent of scope_incremental (<C-s>).
+            vim.keymap.set("n", "<C-space>", "van", { remap = true, desc = "Start treesitter selection" })
+            vim.keymap.set("x", "<C-space>", "an", { remap = true, desc = "Expand selection to parent node" })
+            vim.keymap.set("x", "<bs>", "in", { remap = true, desc = "Shrink selection to child node" })
+        end,
+    },
+    {
         "nvim-treesitter/nvim-treesitter-textobjects",
-      },
-  }
+        branch = "main",
+        config = function()
+            require("nvim-treesitter-textobjects").setup({
+                select = {
+                    -- Automatically jump forward to textobj, similar to targets.vim
+                    lookahead = true,
+                    selection_modes = {
+                        ["@parameter.outer"] = "v", -- charwise
+                        ["@function.outer"] = "V", -- linewise
+                        ["@class.outer"] = "<c-v>", -- blockwise
+                    },
+                    -- Extend textobjects to include surrounding whitespace, like `ap`.
+                    include_surrounding_whitespace = true,
+                },
+            })
+
+            local select = require("nvim-treesitter-textobjects.select")
+            local function map(lhs, query, group, desc)
+                vim.keymap.set({ "x", "o" }, lhs, function()
+                    select.select_textobject(query, group)
+                end, { desc = desc })
+            end
+            map("af", "@function.outer", "textobjects", "Select outer function")
+            map("if", "@function.inner", "textobjects", "Select inner function")
+            map("ac", "@class.outer", "textobjects", "Select outer class")
+            map("ic", "@class.inner", "textobjects", "Select inner part of a class region")
+            map("as", "@local.scope", "locals", "Select language scope")
+        end,
+    },
+}

@@ -1,1 +1,7 @@
+# VS Code: keep user settings, ignore the ~5k files of cache/state it writes.
 .config/Code/*
+!.config/Code/User/
+.config/Code/User/*
+!.config/Code/User/settings.json
+!.config/Code/User/keybindings.json
+!.config/Code/User/keybindings.bkp.json

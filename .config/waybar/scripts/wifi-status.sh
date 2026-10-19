@@ -59,104 +59,62 @@
 #   6).  Example: "802.11ac" indicates you're using the 5 GHz band with
 #   a modern high-speed standard.
 
+# --- Cost note -------------------------------------------------------------
+# This used to make 5 nmcli calls per tick (two of them full AP-list dumps),
+# at "interval": 1. That is ~600k D-Bus round-trips to NetworkManager per day
+# and was the top context-switch source on the system.
+# Now: 1 nmcli call, plus sysfs/ip for the interface and address.
+# ---------------------------------------------------------------------------
+
 if ! command -v nmcli &>/dev/null; then
-  echo "{\"text\": \"󰤫\", \"tooltip\": \"nmcli utility is missing\"}"
+  echo "{\"text\": \"󰴫\", \"tooltip\": \"nmcli utility is missing\"}"
   exit 1
 fi
 
-# Check if Wi-Fi is enabled
-wifi_status=$(nmcli radio wifi)
+# Wireless interface name straight from sysfs - no subprocess.
+wdev=""
+for d in /sys/class/net/*/wireless; do
+  [ -e "$d" ] || continue
+  wdev=${d%/wireless}
+  wdev=${wdev##*/}
+  break
+done
 
-if [ "$wifi_status" = "disabled" ]; then
-  echo "{\"text\": \"󰤮\", \"tooltip\": \"Wi-Fi Disabled\"}"
-  exit 0
-fi
+# Single nmcli call. SSID is requested last so that a colon inside an SSID
+# cannot shift the numeric fields ahead of it.
+wifi_info=$(nmcli -t -f active,signal,security,chan,freq,ssid dev wifi 2>/dev/null | grep "^yes:")
 
-wifi_info=$(nmcli -t -f active,ssid,signal,security dev wifi | grep "^yes")
-
-# If no ESSID is found, set a default value
 if [ -z "$wifi_info" ]; then
+  # Only pay for the radio check when there is nothing connected.
+  if [ "$(nmcli radio wifi 2>/dev/null)" = "disabled" ]; then
+    echo "{\"text\": \"󰴮\", \"tooltip\": \"Wi-Fi Disabled\"}"
+    exit 0
+  fi
   essid="No Connection"
   signal=0
   tooltip="No Connection"
 else
-  # Some defaults
+  signal=$(awk -F: '{print $2}' <<<"$wifi_info")
+  security=$(awk -F: '{print $3}' <<<"$wifi_info")
+  chan=$(awk -F: '{print $4}' <<<"$wifi_info")
+  freq=$(awk -F: '{print $5}' <<<"$wifi_info")
+  # Everything from field 6 on is the SSID; unescape nmcli's "\:".
+  essid=$(awk -F: '{out=$6; for(i=7;i<=NF;i++) out=out":"$i; print out}' <<<"$wifi_info" | sed 's/\\:/:/g')
+
+  chan="$chan ($freq)"
+
   ip_address="127.0.0.1"
-  # gateway="127.0.0.1"
-  # mac_address="N/A"
-  security=$(echo "$wifi_info" | awk -F: '{print $4}')
-  # bssid="N/A"
-  chan="N/A"
-  # rssi="N/A"
-  # rx_bitrate=""
-  # tx_bitrate=""
-  # phy_mode=""
-  signal=$(echo "$wifi_info" | awk -F: '{print $3}')
-
-  active_device=$(nmcli -t -f DEVICE,STATE device status |
-    grep -w "connected" |
-    grep -v -E "^(dummy|lo:)" |
-    awk -F: '{print $1}')
-
-  if [ -n "$active_device" ]; then
-    output=$(nmcli -e no -g ip4.address,ip4.gateway,general.hwaddr device show "$active_device")
-
-    ip_address=$(echo "$output" | sed -n '1p')
-    # gateway=$(echo "$output" | sed -n '2p')
-    # mac_address=$(echo "$output" | sed -n '3p')
-
-    line=$(nmcli -e no -t -f active,bssid,chan,freq device wifi | grep "^yes")
-
-    # bssid=$(echo "$line" | awk -F':' '{print $2":"$3":"$4":"$5":"$6":"$7}')
-    chan=$(echo "$line" | awk -F':' '{print $8}')
-    freq=$(echo "$line" | awk -F':' '{print $9}')
-    chan="$chan ($freq)"
-
-    # if command -v iw &>/dev/null; then
-    # iw_output=$(iw dev "$active_device" station dump)
-    # rssi=$(echo "$iw_output" | grep "signal:" | awk '{print $2 " dBm"}')
-
-    # Upload speed
-    # rx_bitrate=$(echo "$iw_output" | grep "rx bitrate:" | awk '{print $3 " " $4}')
-
-    # Download speed
-    # tx_bitrate=$(echo "$iw_output" | grep "tx bitrate:" | awk '{print $3 " " $4}')
-
-    # Physical Layer Mode
-    # if echo "$iw_output" | grep -E -q "rx bitrate:.* VHT"; then
-    #   phy_mode="802.11ac" # Wi-Fi 5
-    # elif echo "$iw_output" | grep -E -q "rx bitrate:.* HT"; then
-    #   phy_mode="802.11n" # Wi-Fi 4
-    # elif echo "$iw_output" | grep -E -q "rx bitrate:.* HE"; then
-    #   phy_mode="802.11ax" # Wi-Fi 6
-    # fi
-    # fi
-
-    # Get the current Wi-Fi ESSID
-    essid=$(echo "$wifi_info" | awk -F: '{print $2}')
-
-    tooltip=":: ${essid}"
-    tooltip+="\nIP Address: ${ip_address}"
-    # tooltip+="\nRouter:      ${gateway}"
-    # tooltip+="\nMAC Address: ${mac_address}"
-    tooltip+="\nSecurity:   ${security}"
-    # tooltip+="\nBSSID:       ${bssid}"
-    tooltip+="\nChannel:    ${chan}"
-    # tooltip+="\nRSSI:        ${rssi}"
-    tooltip+="\nStrength:   ${signal} / 100"
-
-    # if [ -n "$rx_bitrate" ]; then
-    #   tooltip+="\nRx Rate:     ${rx_bitrate}"
-    # fi
-
-    # if [ -n "$tx_bitrate" ]; then
-    #   tooltip+="\nTx Rate:     ${tx_bitrate}"
-    # fi
-
-    # if [ -n "$phy_mode" ]; then
-    #   tooltip+="\nPHY Mode:    ${phy_mode}"
-    # fi
+  if [ -n "$wdev" ]; then
+    # `ip` is a netlink call - no D-Bus round-trip to NetworkManager.
+    addr=$(ip -4 -o addr show dev "$wdev" scope global 2>/dev/null | awk '{print $4; exit}')
+    [ -n "$addr" ] && ip_address="$addr"
   fi
+
+  tooltip=":: ${essid}"
+  tooltip+="\nIP Address: ${ip_address}"
+  tooltip+="\nSecurity:   ${security}"
+  tooltip+="\nChannel:    ${chan}"
+  tooltip+="\nStrength:   ${signal} / 100"
 fi
 
 # Determine Wi-Fi icon based on signal strength

@@ -1,0 +1,55 @@
+/* Power menu — colors follow whatever theme the Waybar theme-switcher set. */
+
+@import url("file://$HOME/.config/waybar/theme.css");
+
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  border: none;
+  outline: none;
+}
+
+window {
+  background-color: @main-bg;
+  color: @main-fg;
+  border: 2px solid @main-br;
+  border-radius: 10px;
+}
+
+#outer-box,
+#input,
+#scroll,
+#inner-box {
+  background-color: transparent;
+}
+
+#outer-box {
+  margin: 6px;
+}
+
+#entry {
+  background-color: transparent;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+#entry #text {
+  background-color: transparent;
+  color: @main-fg;
+}
+
+#entry:hover {
+  background-color: @hover-bg;
+}
+
+#entry:hover #text {
+  color: @hover-fg;
+}
+
+#entry:selected {
+  background-color: @active-bg;
+}
+
+#entry:selected #text {
+  color: @active-fg;
+}

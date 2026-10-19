@@ -90,6 +90,7 @@
   "hyprland/window": {
     "format": "{}",
     "min-length": 5,
+    "max-length": 30,
 
     "rewrite": {
       // Desktop
@@ -186,7 +187,7 @@
     "exec": "~/.config/waybar/scripts/cpu-temp.sh",
     "return-type": "json",
     "format": "{}",
-    "interval": 5,
+    "interval": 10,
     "min-length": 8,
     "max-length": 8
   },
@@ -200,7 +201,7 @@
     "format": "󰘚 {percentage}%",
     "format-critical": "󰀦 {percentage}%",
     "tooltip-format": "Memory Used: {used:0.1f} GB / {total:0.1f} GB",
-    "interval": 5,
+    "interval": 10,
     "min-length": 7,
     "max-length": 7
   },
@@ -208,13 +209,13 @@
   "cpu": {
     "format": "󰻠 {usage}%",
     "tooltip": false,
-    "interval": 5,
+    "interval": 10,
     "min-length": 6,
     "max-length": 6
   },
 
   "custom/distro": {
-    "format": "❄ ",   
+    "format": "󰣇",   
     "tooltip": false
   },
 
@@ -272,9 +273,9 @@
     "format": "{}",
     "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "on-click-right": "kitty --title '󰤨  Network Manager TUI' bash -c nmtui",
-    "interval": 1,
-    "min-length": 1,
-    "max-length": 1
+    "interval": 15,
+    "min-length": 2,
+    "max-length": 2
   },
 
   "bluetooth": {
@@ -296,9 +297,9 @@
 
     "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
     "on-click-right": "kitty --title '󰂯  Bluetooth TUI' bash -c bluetui",
-    "interval": 1,
-    "min-length": 1,
-    "max-length": 1
+    "interval": 5,
+    "min-length": 2,
+    "max-length": 2
   },
 
   "custom/update": {
@@ -307,8 +308,8 @@
     "format": "{}",
     "on-click": "hyprctl dispatch exec '~/.config/waybar/scripts/system-update.sh up'",
     "interval": 30,
-    "min-length": 1,
-    "max-length": 1
+    "min-length": 2,
+    "max-length": 2
   },
 
   "mpris": {
@@ -327,7 +328,7 @@
     "tooltip-format": "Playing: {title} - {artist}",
     "tooltip-format-paused": "Paused: {title} - {artist}",
     "min-length": 5,
-    "max-length": 35
+    "max-length": 25
   },
 
   "pulseaudio": {
@@ -370,7 +371,7 @@
 
     "tooltip-format": "Discharging: {time}",
     "tooltip-format-charging": "Charging: {time}",
-    "interval": 1,
+    "interval": 30,
     "min-length": 6,
     "max-length": 6
   },

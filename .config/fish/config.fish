@@ -9,3 +9,4 @@ function fish_user_key_bindings
   bind -M insert -m default jk backward-char force-repaint
 end
 
+export PATH="$HOME/.local/bin:$PATH"
