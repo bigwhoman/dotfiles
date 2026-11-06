@@ -6,8 +6,18 @@ return {
         vim.o.timeoutlen = 500
     end,
     opts = {
-        -- our configuration or modifications
-        --
-        --
-    }
-} 
+        -- Name the <leader> prefixes so the popup shows "papis" instead of "+N keymaps".
+        spec = {
+            { "<leader>p", group = "papis" },
+        },
+    },
+    keys = {
+        {
+            "<leader>?",
+            function()
+                require("which-key").show({ global = false })
+            end,
+            desc = "Buffer-local keymaps",
+        },
+    },
+}

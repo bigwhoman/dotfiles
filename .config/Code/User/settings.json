@@ -1,11 +1,85 @@
 {
+    // "workbench.colorTheme": "Monokai Pro (Filter Octagon)"
+    // "[markdown]": {
+    //     "editor.fontSize": 16,
+    //     "editor.lineHeight": 26,                                    
+    //     "editor.wordWrap": "on",                                    
+    //     "editor.wrappingIndent": "indent",
+    //     "editor.minimap.enabled": false                             
+    // }
+    // "editor.fontFamily": "'Fira Code', 'JetBrains Mono', monospace", 
+    // "editor.letterSpacing": 0.5,                 
+    "workbench.colorTheme": "Monokai Pro (Filter Spectrum)",
+    "editor.fontFamily": "'JetBrains Mono', 'Fira Code', monospace",
+    "editor.fontSize": 15,
+    "editor.lineHeight": 1.6,
+    "window.zoomLevel": 0.5,
+    "workbench.colorCustomizations": {
+      "[Monokai Pro (Filter Spectrum)]": {
+        "editor.background": "#2a2a2c"
+      }
+    },
+    "chat.fontSize": 16,
+
     "files.autoSave": "afterDelay",
     "arduino.useArduinoCli": true,
-    "arduino.enableUSBDetection": true
+    "arduino.enableUSBDetection": true,
     "vim.insertModeKeyBindings": [
       {
         "before": ["j", "k"],
         "after": ["<Esc>"]
       }
-    ]
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+      {
+        "before": [
+          "j"
+        ],
+        "after": [
+          "g",
+          "j"
+        ]
+      },
+      {
+        "before": [
+          "k"
+        ],
+        "after": [
+          "g",
+          "k"
+        ]
+      },
+      { "before": ["0"], "after": ["g", "0"] },
+{ "before": ["$"], "after": ["g", "$"] },
+{ "before": ["^"], "after": ["g", "^"] }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+      {
+        "before": [
+          "j"
+        ],
+        "after": [
+          "g",
+          "j"
+        ]
+      },
+      {
+        "before": [
+          "k"
+        ],
+        "after": [
+          "g",
+          "k"
+        ]
+      },
+      { "before": ["0"], "after": ["g", "0"] },
+{ "before": ["$"], "after": ["g", "$"] },
+{ "before": ["^"], "after": ["g", "^"] }
+    ],
+    "grok.summarizeRepliesAloud": false,
+    "grok.telemetry.enabled": false,
+    "markdown-preview-enhanced.enablePreviewZenMode": true,
+    "claudeCode.preferredLocation": "panel",
+    "grok.defaultModel": "grok-4.6",
+    "git.enableSmartCommit": true
 }

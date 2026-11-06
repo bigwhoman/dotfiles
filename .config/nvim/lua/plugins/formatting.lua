@@ -13,15 +13,18 @@ return {
 				rust = { "rustfmt" },
 			},
 			format_on_save = {
-				lsp_fallback = true,
+				lsp_format = "fallback",
 				async = false,
 				timeout_ms = 1000,
 			},
+			-- stylua/black/isort/prettier aren't installed; don't warn on every save.
+			-- Files of those types just save unformatted until the tool is installed.
+			notify_no_formatters = false,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
 			conform.format({
-				lsp_fallback = true,
+				lsp_format = "fallback",
 				async = false,
 				timeout_ms = 1000,
 			})

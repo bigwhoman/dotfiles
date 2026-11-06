@@ -28,15 +28,40 @@ vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
--- Add this to your init.lua
-vim.g.clipboard = {
-	name = "OSC 52",
-	copy = {
-		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-	},
-	paste = {
-		["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-		["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-	},
-}
+-- OSC 52 only over SSH; locally nvim picks up wl-copy/wl-paste on its own.
+-- (OSC 52 paste hangs under tmux/kitty since they don't answer clipboard reads.)
+if vim.env.SSH_TTY then
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+			["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+		},
+	}
+end
+
+-- auto-session: 'localoptions' makes filetype/highlighting come back when a session is restored.
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- No plugin here uses the remote-plugin hosts; turning them off clears the
+-- :checkhealth provider warnings and skips probing for them at startup.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
+-- Code stays unwrapped (wrap = false above); notes and prose wrap at word
+-- boundaries, with wrapped rows indented to match their line.
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("wrap_prose", { clear = true }),
+    pattern = { "markdown", "text", "gitcommit" },
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.breakindent = true
+    end,
+})

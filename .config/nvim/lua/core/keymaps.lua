@@ -4,6 +4,11 @@ local keymap = vim.keymap
 
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
+-- Move by screen row on wrapped lines, but keep counts (5j, 12k) moving by real
+-- lines so they still match the relative line numbers.
+keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, desc = "Down (screen row)" })
+keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, desc = "Up (screen row)" })
+
 -- window management
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Vertical Split" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Horizontal Split" })

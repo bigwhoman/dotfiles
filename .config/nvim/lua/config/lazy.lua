@@ -27,6 +27,8 @@ require("lazy").setup({
   change_detection = {
       notify = false,
   },
+  -- No plugin needs luarocks; without this :checkhealth reports a missing hererocks install.
+  rocks = { enabled = false },
   spec = {
     -- import your plugins
     { import = "plugins" },
