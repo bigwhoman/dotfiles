@@ -9,6 +9,7 @@ return {
         -- Name the <leader> prefixes so the popup shows "papis" instead of "+N keymaps".
         spec = {
             { "<leader>p", group = "papis" },
+            { "<leader>z", group = "pdf (sioyek)" },
         },
     },
     keys = {
